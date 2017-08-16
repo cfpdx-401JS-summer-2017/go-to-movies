@@ -20,6 +20,8 @@ export function Movie({ movie }){
     return (
         <div>
             <span>{ movie.Title } </span>
+            <p>Released: {movie.Year}</p>
+            <img src={movie.Poster} style={{width: 100}}/>
         </div>
     );
 }

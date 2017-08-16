@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
 import './App.css';
-import{Movies} from './movies/Movies';
+import { Movies } from './movies/Movies';
 
 const API_KEY = process.env.REACT_APP_API_KEY;
+
 
 class App extends Component {
 
@@ -16,16 +17,16 @@ class App extends Component {
         };
     }
 
-    componentDidMount(){
+    componentDidMount() {
         this.fetchMovies(this.state.page);
     }
 
-    fetchMovies(page){
+    fetchMovies(page) {
         this.setState({
             movies: []
         });
 
-        fetch(`http://www.omdbapi.com/?s=Bro&plot=short&r=json&page=${page}&apikey=${API_KEY}`)
+        fetch(`http://www.omdbapi.com/?s=Lo&plot=short&r=json&page=${page}&apikey=${API_KEY}`)
             .then(res => res.json())
             .then(data => data.Search)
             .then(movies => {
@@ -36,34 +37,40 @@ class App extends Component {
             });
     }
 
-    handlePageChange(incr){
+    handlePageChange(incr) {
         const page = Math.max(1, this.state.page + incr);
         console.log('page is', page);
-        this.setState({page});
+        this.setState({ page });
         this.fetchMovies(page);
     }
 
     render() {
+        const header = <h1> Let's Go to the Movies </h1>
         const { loading, movies } = this.state;
-        if(loading) return <div> Loading... </div>;
+        if (loading) return <div> Loading... </div>;
 
         return (
             <div className="App">
+            <div>
+                {header}
+            </div>
+            <div className="Movies">
                 <PagingButton label="Prev Page" incr={-1}
                     onClick={this.handlePageChange.bind(this)}
                 />
                 <PagingButton label="Next Page" incr={1}
                     onClick={this.handlePageChange.bind(this)}
                 />
-                <Movies movies={ movies }/>
+                <Movies movies={movies} />
+            </div>
             </div>
         );
     }
 }
 
-function PagingButton({onClick, incr, label}){
+function PagingButton({ onClick, incr, label }) {
     return (
-        <button onClick = {() => onClick(incr)}>
+        <button onClick={() => onClick(incr)}>
             {label}
         </button>
     );
