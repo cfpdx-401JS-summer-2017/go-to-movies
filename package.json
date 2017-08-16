@@ -1,0 +1,21 @@
+{
+  "name": "go-to-movies",
+  "version": "0.1.0",
+  "description": "My first attempt at making a dynamic react app",  
+  "private": true,
+  "dependencies": {
+    "react": "^15.6.1",
+    "react-dom": "^15.6.1",
+    "react-scripts": "1.0.11"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Thomson42/go-to-movies.git"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test --env=jsdom",
+    "eject": "react-scripts eject"
+  }
+}
