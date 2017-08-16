@@ -73,20 +73,20 @@ class App extends Component {
                             <input type="submit" value="Submit" />
                         </form>
                     </div>
-                    <Movies movies={movies} />
                     <div>
-                        <PagingButton label="Prev Page" incr={-1} onClick={this.handlePageChange.bind(this)} />
-                        <PagingButton label="Next Page" incr={1} onClick={this.handlePageChange.bind(this)} />
+                        <PagingButton disabled={movies.length === 0} label="Prev Page" incr={-1} onClick={this.handlePageChange.bind(this)} />
+                        <PagingButton disabled={movies.length === 0} label="Next Page" incr={1} onClick={this.handlePageChange.bind(this)} />
                     </div>
+                    <Movies movies={movies} />
                 </div>
             </div>
         );
     }
 }
 
-function PagingButton({ onClick, incr, label }) {
+function PagingButton({ onClick, incr, label, disabled }) {
     return (
-        <button onClick={() => onClick(incr)}>
+        <button disabled={disabled} onClick={() => onClick(incr)}>
             {label}
         </button>
     );
