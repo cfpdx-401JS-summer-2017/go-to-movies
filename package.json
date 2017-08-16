@@ -1,7 +1,7 @@
 {
   "name": "go-to-movies",
   "version": "0.1.0",
-  "description": "My first attempt at making a dynamic react app",  
+  "description": "My first attempt at making a dynamic react app",
   "private": true,
   "dependencies": {
     "react": "^15.6.1",

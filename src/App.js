@@ -2,22 +2,35 @@ import React, { Component } from 'react';
 import logo from './logo.svg';
 import './App.css';
 
-const API_KEY = process.env.React_APP_API_KEY;
+const API_KEY = process.env.REACT_APP_API_KEY;
 class App extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
       movies: null,
-      title: null,
+      title: "star",
       loading: true
     };
+    this.handleChange = this.handleChange.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
+  }
+
+  handleChange(event) {
+    this.setState({
+      value: event.target.value
+    });
+  }
+
+  handleSubmit(event) {
+    console.log(this.state.title);
+    this.fetchMovies(this.state.title);
   }
   componentDidMount() {
     this.fetchMovies(this.state.title);
   }
   fetchMovies(title) {
-    const title = '';
+    // const title = '';
     this.setState({
       movies:[]
     });
@@ -31,11 +44,22 @@ class App extends Component {
         loading: false
       });
     });
+
+
   }
 
   render() {
     const { loading, movies } = this.state;
-    if(loading) return <div>Loading...</div>
+    if(loading) return <div>Loading...</div>;
+
+    return (
+      <div>
+        <form onSubmit={this.handleSubmit}>
+          <input type="text" placeholder="Search..." value={this.state.title} onChange={this.handleChange}/>
+          <input type="submit" value="Submit"/>
+        </form>
+      </div>
+    )
   }
 }
 
