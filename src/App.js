@@ -10,10 +10,10 @@ class App extends Component {
         super(props);
 
         this.state = {
-            movies: null,
+            movies: [],
             page: 1,
-            loading: true,
-            title: 'a'
+            loading: false,
+            title: ''
         };
     }
 
@@ -30,21 +30,10 @@ class App extends Component {
         event.preventDefault();
     }
 
-    // handleSearchInput(value) {
-    //     console.log('inside handlesearchinput value is', value, 'this.state.title is', this.state.title);
-    //     this.setState({
-    //         title: value
-    //     });
-    // }
-
-    componentDidMount() {
-        // this.handleSearchInput(this.state.title);
-        this.fetchMovies(this.state.page, this.state.title);
-    }
-
     fetchMovies(page, title) {
         console.log('title is', encodeURI(title));
         this.setState({
+            loading: true,
             movies: []
         });
 
@@ -75,9 +64,7 @@ class App extends Component {
         return (
             <div>
                 <div>
-                    <PagingButton label="Prev Page" incr={-1} onClick={this.handlePageChange.bind(this)} />
-                    <PagingButton label="Next Page" incr={1} onClick={this.handlePageChange.bind(this)} />
-                    <div>
+                    <div style={{  }}>
                         <form onSubmit={this.handleSubmit.bind(this)}>
                             <label>
                                 Search by Title:
@@ -87,6 +74,10 @@ class App extends Component {
                         </form>
                     </div>
                     <Movies movies={movies} />
+                    <div>
+                        <PagingButton label="Prev Page" incr={-1} onClick={this.handlePageChange.bind(this)} />
+                        <PagingButton label="Next Page" incr={1} onClick={this.handlePageChange.bind(this)} />
+                    </div>
                 </div>
             </div>
         );
