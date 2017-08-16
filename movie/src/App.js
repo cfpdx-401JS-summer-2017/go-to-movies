@@ -23,11 +23,16 @@ class App extends Component {
   }
 
   fetchMovies(page) {
-    // console.log('search', title);
+    
+    this.setState({
+      //TODO: search: ...
+      movies:[]
+    });
 
-    this.setState({ movies:[] });
+    const url = `http://www.omdbapi.com/?apikey=${API_KEY}&s=${this.state.search}&r=json&page=${page}`;
+    console.log(url);
   
-    fetch(`http://www.omdbapi.com/?s=${this.state.search}&plot=short&r=json$page${page}&apikey=${API_KEY}`)    
+    fetch(url)    
       .then(res => res.json())
       .then(data => {
         console.log('count of found movies', data.totalResults);
@@ -36,48 +41,50 @@ class App extends Component {
         console.log('count of pages', pages);
         this.setState({ pages });
 
+        console.log('count of movies in this set', data.Search.length);
+
         return data.Search;
       })
       .then(movies => this.setState({ movies, loading: false }));
   }
 
   handlePageChange(incr) {
-    if(this.state.page === this.state.pages) {
+    if(this.state.page === 1 && incr === -1) {
+      console.log('you are on the first page');
+      //TODO: disable prev button
+
+    } else if(this.state.page === this.state.pages) {
       console.log('you are on the last page');
+      //TODO: disable next button
+
     } else {
-      const page = Math.max(1, this.state.page + incr);
-      console.log('going to page...', page);
-      this.setState({ page });
-      this.fetchMovies(page);
+      const nextPage = Math.max(1, this.state.page + incr);
+      console.log('going to next page', nextPage);
+
+      this.setState({ page: nextPage });
+      this.fetchMovies(nextPage);
     }
   }
 
-  // findMovies() {
-  //   let search = 'GodFather';
-
-  //   this.fetchMovies(1, search);
-  // }
-  
-  /* <label>
-            Search Titles: 
-            <input id="search" name="userSearch" type="text"
-              onChange={({target}) => this.fetchMovies(1, target.value)} />
-          </label>
-          <br/> */
-
-  // if(!movies) return <div>No Movies Found ¯\_(ツ)_/¯</div>;
   render() {
     const {loading, movies} = this.state;
-    if(loading) return <div>Finding Movies...</div>;
-
+    if(loading) return <div>Loading Movies...</div>;
+    if(loading === false && !movies) return <div>No Movies Found ¯\_(ツ)_/¯</div>;
+    
     return (
       <div>
         <h1>Find Movies</h1>
 
         <div>
-          
-          <PageNavButton label="Prev" incr={-1} onClick={this.handlePageChange.bind(this)} />
-          <PageNavButton label="Next" incr={1} onClick={this.handlePageChange.bind(this)} />
+          <label>
+            Search Titles: 
+            <input id="search" name="userSearch" type="text"
+              onChange={({target}) => this.fetchMovies(1, target.value)} />
+          </label>
+          <br/>
+          <p>Page {this.state.page} of {this.state.pages}</p>
+          <PageNavButton label="< Prev" incr={-1} onClick={this.handlePageChange.bind(this)} />
+          <PageNavButton label="Next >" incr={1} onClick={this.handlePageChange.bind(this)} />
         </div>
 
         <div>
