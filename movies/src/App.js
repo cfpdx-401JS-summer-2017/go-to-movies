@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import './App.css';
+import{Movies} from './movies/Movies';
 
 const API_KEY = process.env.REACT_APP_API_KEY;
 
@@ -26,11 +27,7 @@ class App extends Component {
 
         fetch(`http://www.omdbapi.com/?s=Bro&plot=short&r=json&page=${page}&apikey=${API_KEY}`)
             .then(res => res.json())
-            .then(data => {
-                console.log('data is', data.Response);
-                if(!data.Response) return 'Movies not found';
-                else return data.Search;
-            })
+            .then(data => data.Search)
             .then(movies => {
                 this.setState({
                     movies,
@@ -69,29 +66,6 @@ function PagingButton({onClick, incr, label}){
         <button onClick = {() => onClick(incr)}>
             {label}
         </button>
-    );
-}
-
-function Movies({ movies }){
-    if (!movies) return <div> Not found </div>;
-    else {
-        return (
-            <ul>
-                {movies.map(movie => (
-                    <li key = {movie.imdbID}>
-                        <Movie movie={ movie }/>
-                    </li>
-                ))}
-            </ul>
-        );
-    }
-}
-
-function Movie({ movie }){
-    return (
-        <div>
-            <span>{ movie.Title } </span>
-        </div>
     );
 }
 
