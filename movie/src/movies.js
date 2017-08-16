@@ -1,4 +1,5 @@
 import React from 'react';
+const API_KEY = process.env.REACT_APP_API_KEY;
 
 // create table of all movies
 export function Movies({ movies }) {
@@ -16,7 +17,7 @@ export function Movies({ movies }) {
 
 // create row for individual movie
 export function Movie({ movie }) {
-  console.log('imdbID', movie.imdbID);
+  // console.log('imdbID', movie.imdbID);
   return (
     <tr>
       <td>
@@ -27,7 +28,7 @@ export function Movie({ movie }) {
           <tbody>
             <tr><td>{movie.Title}</td></tr>
             <tr><td>{movie.Year}</td></tr>
-            <tr><td><a href="">Read Plot Summary...</a></td></tr>
+            <tr><td><a href={`http://www.omdbapi.com/?apikey=${API_KEY}&i=${movie.imdbID}&r=json`}>Read Plot Summary...</a></td></tr>
           </tbody>
         </table>
       </td>

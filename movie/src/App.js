@@ -35,17 +35,20 @@ class App extends Component {
     fetch(url)    
       .then(res => res.json())
       .then(data => {
-        console.log('count of found movies', data.totalResults);
-        const pages = Math.ceil(data.totalResults / 10); //round up
+        if(data.Response === 'False') console.log(data.Error);
+        else {
+          console.log('count of found movies', data.totalResults);
+          const pages = Math.ceil(data.totalResults / 10); //round up
 
-        console.log('count of pages', pages);
-        this.setState({ pages });
+          console.log('count of pages', pages);
+          this.setState({ pages });
 
-        console.log('count of movies in this set', data.Search.length);
+          console.log('count of movies in this set', data.Search.length);
 
-        return data.Search;
-      })
-      .then(movies => this.setState({ movies, loading: false }));
+          const movies = data.Search;
+          this.setState({ movies, loading: false });
+        }
+      });
   }
 
   handlePageChange(incr) {
@@ -66,25 +69,29 @@ class App extends Component {
     }
   }
 
+  handleSearchChange(search) {
+    console.log('searching for...', search);
+    if(!search) search = 'Star Wars';
+    this.setState({ search });
+    this.fetchMovies(1);
+  }
+
   render() {
     const {loading, movies} = this.state;
     if(loading) return <div>Loading Movies...</div>;
     if(loading === false && !movies) return <div>No Movies Found ¯\_(ツ)_/¯</div>;
     
     return (
-      <div>
+      <div className="main">
         <h1>Find Movies</h1>
 
         <div>
-          <label>
-            Search Titles: 
-            <input id="search" name="userSearch" type="text"
-              onChange={({target}) => this.fetchMovies(1, target.value)} />
-          </label>
+          <input id="search" name="userSearch" type="text"
+            onChange={({target}) => this.handleSearchChange(target.value)} />
           <br/>
-          <p>Page {this.state.page} of {this.state.pages}</p>
           <PageNavButton label="< Prev" incr={-1} onClick={this.handlePageChange.bind(this)} />
           <PageNavButton label="Next >" incr={1} onClick={this.handlePageChange.bind(this)} />
+          <p>Page {this.state.page} of {this.state.pages}</p>
         </div>
 
         <div>
