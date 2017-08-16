@@ -19,6 +19,7 @@ class App extends Component {
 
 
     handleChange(event) {
+        console.log('changed');
         this.setState({
             title: event.target.value
         });
@@ -31,7 +32,7 @@ class App extends Component {
     }
 
     fetchMovies(page, title) {
-        console.log('title is', encodeURI(title));
+        console.log('title is',{title});
         this.setState({
             loading: true,
             movies: []
@@ -62,9 +63,10 @@ class App extends Component {
         if(loading) return <div>Loading...</div>;
 
         return (
-            <div>
+            <div className="frame">
                 <div>
-                    <div style={{  }}>
+                    <div>
+                        <h1>Let's go to the movies!</h1>
                         <form onSubmit={this.handleSubmit.bind(this)}>
                             <label>
                                 Search by Title:

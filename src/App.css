@@ -12,3 +12,17 @@
 .App-intro {
   font-size: large;
 }
+
+.frame {
+  background-image: url('./red-theater-curtains.jpg');
+}
+
+h1 {
+  text-align: center;
+  color: #a50e0e;
+}
+
+form {
+  margin: 1em
+}
+
