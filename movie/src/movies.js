@@ -1,25 +1,36 @@
 import React from 'react';
 
-// create list of all movies
+// create table of all movies
 export function Movies({ movies }) {
   return (
-    <ul>
-      {movies.map(movie => (
-        <li key={movie.imdbID}>
-          <Movie movie={movie} />
-        </li>
-      ))}
-    </ul>
+    <table>
+      <tbody>
+        {movies.map(movie => (
+          <Movie movie={movie} key={movie.imdbID} />
+        ))}
+      </tbody>
+    </table>
 
   );
 }
 
-// create list item for individual movie
+// create row for individual movie
 export function Movie({ movie }) {
+  console.log('imdbID', movie.imdbID);
   return (
-    <div>
-      <span>{movie.title}</span>
-      <img src={movie.Poster} style={{width:100}} alt={movie.Title} />
-    </div>
+    <tr>
+      <td>
+        <img src={movie.Poster} style={{width:100}} alt={movie.Title} />
+      </td>
+      <td>
+        <table>
+          <tbody>
+            <tr><td>{movie.Title}</td></tr>
+            <tr><td>{movie.Year}</td></tr>
+            <tr><td><a href="">Read Plot Summary...</a></td></tr>
+          </tbody>
+        </table>
+      </td>
+    </tr>
   );
 }
