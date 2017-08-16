@@ -13,20 +13,20 @@ class App extends Component {
             movies: null,
             page: 1,
             loading: true,
-            value: ''
+            title: 'a'
         };
     }
 
 
     handleChange(event) {
         this.setState({
-            value: event.target.value
+            title: event.target.value
         });
     }
 
     handleSubmit(event) {
-        console.log('submitted was', this.state.value);
-        this.fetchMovies(this.state.value);
+        console.log('submitted was', this.state.title);
+        this.fetchMovies(this.state.page, this.state.title);
         event.preventDefault();
     }
 
@@ -39,17 +39,16 @@ class App extends Component {
 
     componentDidMount() {
         // this.handleSearchInput(this.state.title);
-        this.fetchMovies(this.state.page);
+        this.fetchMovies(this.state.page, this.state.title);
     }
 
-    fetchMovies(page) {
-        const title = `${this.state.value}`;
-        console.log('title is', title);
+    fetchMovies(page, title) {
+        console.log('title is', encodeURI(title));
         this.setState({
             movies: []
         });
 
-        fetch(`http://www.omdbapi.com/?s=${encodeURI({title})}&plot=short&r=json&page=${page}&apikey=${API_KEY}`)
+        fetch(`http://www.omdbapi.com/?s=${encodeURI(title)}&plot=short&r=json&page=${page}&apikey=${API_KEY}`)
             .then(res => res.json())
             .then(data => data.Search)
             .then(movies => {
@@ -82,7 +81,7 @@ class App extends Component {
                         <form onSubmit={this.handleSubmit.bind(this)}>
                             <label>
                                 Search by Title:
-                                <input type="text" name="title" style={{ width: '300px' }} value={this.state.value} onChange={this.handleChange.bind(this)} />
+                                <input type="text" name="title" style={{ width: '300px' }} value={this.state.title} onChange={this.handleChange.bind(this)} />
                             </label>
                             <input type="submit" value="Submit" />
                         </form>
