@@ -12,6 +12,11 @@
     "type": "git",
     "url": "git+https://github.com/Thomson42/go-to-movies.git"
   },
+  "author": "Christopher Thomson, Pierre Shabani",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Thomson42/adding-auth/issues"
+  },
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
