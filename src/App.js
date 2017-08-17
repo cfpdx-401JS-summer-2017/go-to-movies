@@ -32,7 +32,7 @@ class App extends Component {
       movies: []
     });
 
-    fetch(`http://www.omdbapi.com/?s=${searchQuery}&plot=short&r=json&page=${page}&apikey=${API_KEY}`)
+    fetch(`http://www.omdbapi.com/?s=${searchQuery}&r=json&page=${page}&apikey=${API_KEY}`)
       .then(res => res.json())
       .then(data => data.Search)
       .then(movies => {
@@ -55,7 +55,7 @@ class App extends Component {
 
   render() {
     
-    const { loading, movies } = this.state;
+    const { loading, movies, search } = this.state;
     
     return(
       <div id="wrap">
@@ -65,15 +65,15 @@ class App extends Component {
         <div id="content">
           {this.state.movies &&
             <div id="pagination">
-              <PagingButton label="Prev Page" incr={-1}
+              <PagingButton label="&laquo; Prev Page" incr={-1}
               onClick={this.handlePageChange.bind(this)}
               / >
-              <PagingButton label="Next Page" incr={1}
+              <PagingButton label="Next Page &raquo;" incr={1}
               onClick={this.handlePageChange.bind(this)}
               / >
             </div>
           }
-          <Movies loading={loading} movies={movies} />
+          <Movies loading={loading} movies={movies} search={search} />
         </div>
       </div>
     );
