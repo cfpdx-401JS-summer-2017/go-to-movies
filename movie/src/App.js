@@ -11,8 +11,10 @@ class App extends Component {
 
     this.state = {
       movies: null,
+      moviesWithDetails: null,
       page: 1,
       pages: 1,
+      total: null,
       loading: true,
       search: 'Star Wars', //initial search
       prevBtnClass: 'hidden-button',
@@ -21,70 +23,70 @@ class App extends Component {
   }
 
   componentDidMount() {
-    this.fetchMovies(this.state.page);
+    this.fetchMovies(this.state.page, this.state.search);
   }
 
-  fetchMovies(page) {
-    this.setState({ movies:[] });
+  fetchMovies(page, search) {
+    if(!search) search ='Star Wars';
+    this.setState({ movies:[], search });
 
-    // get the list of movies from search
-    fetch(`http://www.omdbapi.com/?apikey=${API_KEY}&s=${this.state.search}&r=json&page=${page}`)    
+    fetch(`http://www.omdbapi.com/?apikey=${API_KEY}&s=${search}&r=json&page=${page}`)
       .then(res => res.json())
       .then(data => {
         if(data.Response === 'False') console.log(data.Error); // should display something on the page if no results are found
         else {
+          const total = data.totalResults;
           const pages = Math.ceil(data.totalResults / 10); //round up
-          this.setState({ pages });
-          return data.Search;
+          const movies = data.Search;
+          this.setState({ total, pages, movies, loading: false });
+          return movies;
         }
-      })
-      // get the details for each movie
-      .then(movies => {
-        console.log('movies found', movies);
+      });
+      // .then(movies => {
+      //   return movies.map(m => this.fetchMovieDetails(m.imdbID));
+      // })
+      // .then(moviesWithDetails => {
+      //   console.log('moviesWithDetails', moviesWithDetails);
+      //   this.setState({ moviesWithDetails });
+      // });
+  }
 
-        return movies.map(movie => {
-          fetch(`http://www.omdbapi.com/?apikey=${API_KEY}&i=${movie.imdbID}&r=json`)    
-            .then(res => res.json())
-            .then(data => {
-              console.log('movie details found', data);
-              return data; 
-            });
-        });
-      })
-      .then(movies => {
-        console.log('movies with details', movies);
-        this.setState({ movies, loading: false });
+  fetchMovieDetails(imdbID) {
+    fetch(`http://www.omdbapi.com/?apikey=${API_KEY}&i=${imdbID}&r=json`)    
+      .then(res => res.json())
+      .then(data => {
+        console.log('movie details found', data);
+        return data;
       });
   }
 
   handlePageChange(incr) {
-    if(this.state.page === 1 && incr === -1) {
+    const nextPage = Math.max(1, this.state.page + incr);
+    this.setState({ page: nextPage });
+
+    // you're going to the first page, can't go back
+    if(this.state.page === 2 && incr === -1) {
       this.setState({
         prevBtnClass: 'hidden-button',
         nextBtnClass: 'visible-button'
       });
-    
-    } else if(this.state.page === this.state.pages && incr === 1) {
-      this.setState({
-        prevBtnClass: 'visible-button',
-        nextBtnClass: 'hidden-button'});
-    
-    } else {
-      const nextPage = Math.max(1, this.state.page + incr);
-      
-      this.setState({
-        page: nextPage,
-        prevBtnClass: 'visible-button',
-        nextBtnClass: 'visible-button'});
-      this.fetchMovies(nextPage);
     }
-  }
+    // you're going the last page, can't go forward
+    else if(this.state.page === (this.state.pages - 1) && incr === 1) {
+      this.setState({
+        prevBtnClass: 'visible-button',
+        nextBtnClass: 'hidden-button'
+      });
+    }
+    // you're on an in between page, go either back or forward
+    else {
+      this.setState({
+        prevBtnClass: 'visible-button',
+        nextBtnClass: 'visible-button'
+      });
+    }
 
-  handleSearchChange(search) {
-    // console.log('searching for..."' + search + '"');
-    if(!search) search = 'Star Wars';
-    this.setState({ search });
-    this.fetchMovies(1);
+    this.fetchMovies(this.state.page, this.state.search);
   }
 
   render() {
@@ -95,15 +97,20 @@ class App extends Component {
     
     return (
       <div className="main">
-        <h1>Find Movies</h1>
+        <h1>Let's Go to the Movies!</h1>
         <div>
-          <Search onSearch={(search) => this.handleSearchChange(search)} />
+          <Search onSearch={(search) => {
+            this.setState({ page: 1 });
+            this.fetchMovies(1, search);
+          }} />
+          <br/>
+          <p>Found {this.state.total} movies like <em>{this.state.search}</em></p>
           <br/>
           <PageNavButton label="< Prev" incr={-1}
             className={this.state.prevBtnClass}
             onClick={this.handlePageChange.bind(this)} />
           
-          <p>Page {this.state.page} of {this.state.pages}</p>
+          <p id="nav-text">Page {this.state.page} of {this.state.pages}</p>
           
           <PageNavButton label="Next >" incr={1}
             className={this.state.nextBtnClass}
@@ -132,7 +139,7 @@ function Search({ onSearch }) {
       const form = e.target;
       onSearch(form.elements.search.value);
     }} >
-      <input name="search"/>
+      <input name="search" placeholder="search a movie title"/>
       <button className="visible-button" type="submit">Search</button>
     </form>
   );

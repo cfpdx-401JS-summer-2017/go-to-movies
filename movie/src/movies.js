@@ -16,7 +16,7 @@ export function Movies({ movies }) {
 }
 
 export function Movie({ movie }) {
-  console.log('adding movie to page', movie);
+  // console.log('adding movie to page', movie);
 
   return (
     <tr>
@@ -27,7 +27,7 @@ export function Movie({ movie }) {
         <table>
           <tbody>
             <tr><td>{movie.Title} ({movie.Year})</td></tr>
-            <tr><td>Rated {movie.Rated}</td></tr>
+            <tr><td>{movie.Rated}</td></tr>
             <tr><td>{movie.Genre}</td></tr>
             <tr><td>{movie.Plot}</td></tr>
           </tbody>

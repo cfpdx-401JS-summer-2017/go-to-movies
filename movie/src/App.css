@@ -1,9 +1,17 @@
+/* body {
+  background: linear-gradient(to bottom,#bed2dd 0%,rgba(222,231,236,0.5) 50%,rgba(255,255,255,0) 100%);
+} */
+
 .main {
   margin: auto;
   max-width: 940px;
   font-family: 'arial';
   padding-left: 1rem;
   padding-right: 1rem;
+}
+
+h1 {
+  padding-top: 5rem;
 }
 
 table {
@@ -32,6 +40,10 @@ p {
   display: inline-block;
   padding-right: .5rem;
   padding-left: .5rem;
+}
+
+nav-text {
+  min-width: 150px;
 }
 
 input {
