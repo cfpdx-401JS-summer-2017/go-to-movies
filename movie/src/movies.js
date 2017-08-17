@@ -21,16 +21,12 @@ export function Movie({ movie }) {
   return (
     <tr>
       <td>
-        <img src={movie.Poster} style={{width:100}} alt={movie.Title} />
+        <a href={`http://www.omdbapi.com/?apikey=${API_KEY}&i=${movie.imdbID}&r=json`}>
+          <img src={movie.Poster} style={{width:100}} alt={movie.Title} />
+        </a>
       </td>
       <td>
-        <table>
-          <tbody>
-            <tr><td>{movie.Title}</td></tr>
-            <tr><td>{movie.Year}</td></tr>
-            <tr><td><a href={`http://www.omdbapi.com/?apikey=${API_KEY}&i=${movie.imdbID}&r=json`}>Read Plot Summary...</a></td></tr>
-          </tbody>
-        </table>
+        {movie.Title} ({movie.Year})
       </td>
     </tr>
   );

@@ -2,17 +2,27 @@
   margin: auto;
   max-width: 940px;
   font-family: 'arial';
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
+
+table {
+  border-collapse: collapse;
 }
 
 tr {
   border-bottom: 1px solid black;
 }
 
+img:hover {
+  box-shadow: 0 5px 15px rgba(0,0,0,0.6);
+}
+
 p {
   margin-top: 0;
 }
 
-#search {
+input {
   padding: .25rem;
   font-size: 1.25rem;
   border-radius: 2px;
@@ -20,7 +30,7 @@ p {
   min-width: 300px;
 }
 
-#search, #search:focus {
+input, input:focus {
   border: 1px solid black;
 }
 
