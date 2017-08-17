@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import logo from './logo.svg';
 import './App.css';
+import { Movie } from './movies/Movies'
 
 const API_KEY = process.env.REACT_APP_API_KEY;
 class App extends Component {
@@ -8,7 +9,7 @@ class App extends Component {
     super(props);
 
     this.state = {
-      movies: null,
+      movies: [],
       title: '',
       loading: true
     };
@@ -31,20 +32,16 @@ class App extends Component {
     this.fetchMovies(this.state.title);
   }
   fetchMovies(title) {
-    // const title = '';
-    this.setState({
-      movies:[]
-    });
+    //const title = '';
 
   fetch(`http://www.omdbapi.com/?t=${encodeURI(title)}&plot=full&apikey=${API_KEY}`)
     .then(res => res.json())
-    .then(data => data.Search)
-    .then(movies => {
+    .then(movie => {
       this.setState({
-        movies,
+        movies:[movie, ...this.state.movies],
         loading: false
       });
-    });
+    })
 
 
   }
@@ -60,6 +57,8 @@ class App extends Component {
           onChange={({ target }) => this.handleChange(target)}/>
           <input type="submit" value="Submit"/>
         </form>
+      <div>{movies.map((movie)=> <Movie movie={movie}/>)}
+      </div>
       </div>
     )
   }
