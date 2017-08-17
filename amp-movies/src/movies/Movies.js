@@ -16,7 +16,7 @@ export function Movie({movie}) {
     return (
         <div>
             <span>{movie.Title}!</span>
-            <img src={movie.Poster} style={{width:100}}/>
+            <img src={movie.Poster} style={{width:100}} alt=""/>
         </div>
     );
 }

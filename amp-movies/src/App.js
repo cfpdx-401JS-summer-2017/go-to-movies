@@ -12,6 +12,7 @@ class App extends Component {
     this.state = {
       movies: null,
       page: 1,
+      search: "",
       loading: true
     };
   }
@@ -20,12 +21,12 @@ class App extends Component {
     this.fetchMovies(this.state.page);
   }
 
-  fetchMovies(page) {
+  fetchMovies(search, page) {
     this.setState({
       movies: []
     });
 
-    fetch(`http://www.omdbapi.com/?s=St&plot=short&r=json&page=${page}&apikey=${API_KEY}`)
+    fetch(`http://www.omdbapi.com/?s=${search}&plot=short&r=json&page=${page}&apikey=${API_KEY}`)
       .then(res => res.json())
       .then(data => data.Search)
       .then(movies => {
@@ -42,22 +43,46 @@ class App extends Component {
     this.fetchMovies(page);
   }
 
+  handleSearch(search) {
+    const searchText = SearchBar.data;
+    this.setState({searchText})
+  }
+
   render() {
     const{loading, movies} = this.state;
     if(loading) return <div>Loading...</div>;
 
     return (
       <div>
-        <PagingButton label="Prev Page" incr={-1}
-          onClick={this.handlePageChange.bind(this)}
-        />
-        <PagingButton label="Next Page" incr={-1}
-          onClick={this.handlePageChange.bind(this)}
-        />
-        <Movies movies={movies}/>
+        <div>
+          <SearchBar label="Search" submit="search"
+            onClick={this.handleSearch.bind(this)}
+          />
+        </div>
+        <div>
+          <PagingButton label="Prev Page" incr={-1}
+            onClick={this.handlePageChange.bind(this)}
+          />
+          <PagingButton label="Next Page" incr={-1}
+            onClick={this.handlePageChange.bind(this)}
+          />
+          <Movies movies={movies}/>
+          <PagingButton label="Prev Page" incr={-1}
+            onClick={this.handlePageChange.bind(this)}
+          />
+          <PagingButton label="Next Page" incr={-1}
+            onClick={this.handlePageChange.bind(this)}
+          />
+        </div>
       </div>
     );
   }
+}
+
+function SearchBar({onClick, submit, label}) {
+  return(
+    <input type="text" onClick={() => onClick(submit)}/>
+  )
 }
 
 function PagingButton({onClick, incr, label}) {
