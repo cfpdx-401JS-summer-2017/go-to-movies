@@ -1,8 +1,9 @@
 import React from 'react';
 
 
-export function Movies({ movies }){
-    if (!movies) return <div> Not found </div>;
+export function Movies({ movies, search }){
+    if (!movies && !search) return <div> Search for a Movie </div>;
+      else if (!movies) return <div> Not Found </div>;
     else {
         return (
             <ul>
