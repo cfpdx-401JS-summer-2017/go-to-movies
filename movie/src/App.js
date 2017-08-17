@@ -14,9 +14,9 @@ class App extends Component {
       page: 1,
       pages: 1,
       loading: true,
-      search: 'Star Wars',
-      prevBtnClass: 'hidden',
-      nextBtnClass: 'button'
+      search: 'Star Wars', //initial search
+      prevBtnClass: 'hidden-button',
+      nextBtnClass: 'visible-button'
     };
   }
 
@@ -27,67 +27,61 @@ class App extends Component {
   fetchMovies(page) {
     this.setState({ movies:[] });
 
-    const url = `http://www.omdbapi.com/?apikey=${API_KEY}&s=${this.state.search}&r=json&page=${page}`;
-    // console.log(url);
-  
-    fetch(url)    
+    // get the list of movies from search
+    fetch(`http://www.omdbapi.com/?apikey=${API_KEY}&s=${this.state.search}&r=json&page=${page}`)    
       .then(res => res.json())
       .then(data => {
-        if(data.Response === 'False') console.log(data.Error);
+        if(data.Response === 'False') console.log(data.Error); // should display something on the page if no results are found
         else {
           const pages = Math.ceil(data.totalResults / 10); //round up
-          const movies = data.Search;
-          this.setState({ pages, movies, loading: false });
-          // console.log('count of found movies', data.totalResults);
-          // console.log('count of pages', pages);
-          // console.log('count of movies in this set', data.Search.length);
-          // return data.Search;
+          this.setState({ pages });
+          return data.Search;
         }
-      });
-      // .then(movies => {
-      //   const detailedMovies = {};
-      //   movies.map((movie) => {
-      //     return this.fetchMovieDetails(movie.imdbID);
-      //       .then
-      //     this.setState({ movies: detailedMovies });
-      //   });
-      // });
-  }
+      })
+      // get the details for each movie
+      .then(movies => {
+        console.log('movies found', movies);
 
-  // fetchMovieDetails(imdbID) {
-  //   // console.lot('OMG it worked!');
-  //   const url = `http://www.omdbapi.com/?apikey=${API_KEY}&i=${imdbID}&r=json`;
-  
-  //   fetch(url)    
-  //     .then(res => res.json())
-  //     .then(data => {
-  //       if(data.Response) return data;
-  //     });
-  // }
+        return movies.map(movie => {
+          fetch(`http://www.omdbapi.com/?apikey=${API_KEY}&i=${movie.imdbID}&r=json`)    
+            .then(res => res.json())
+            .then(data => {
+              console.log('movie details found', data);
+              return data; 
+            });
+        });
+      })
+      .then(movies => {
+        console.log('movies with details', movies);
+        this.setState({ movies, loading: false });
+      });
+  }
 
   handlePageChange(incr) {
     if(this.state.page === 1 && incr === -1) {
-      console.log('you are on the first page');
-      //TODO: disable prev button
-      this.setState({ prevBtnClass: 'hidden', nextBtnClass: 'button'});
-
+      this.setState({
+        prevBtnClass: 'hidden-button',
+        nextBtnClass: 'visible-button'
+      });
+    
     } else if(this.state.page === this.state.pages && incr === 1) {
-      console.log('you are on the last page');
-      //TODO: disable next button
-      this.setState({ prevBtnClass: 'button', nextBtnClass: 'hidden'});
-
+      this.setState({
+        prevBtnClass: 'visible-button',
+        nextBtnClass: 'hidden-button'});
+    
     } else {
       const nextPage = Math.max(1, this.state.page + incr);
-      console.log('going to next page', nextPage);
       
-      this.setState({ page: nextPage, prevBtnClass: 'button', nextBtnClass: 'button'});
+      this.setState({
+        page: nextPage,
+        prevBtnClass: 'visible-button',
+        nextBtnClass: 'visible-button'});
       this.fetchMovies(nextPage);
     }
   }
 
   handleSearchChange(search) {
-    //TODO: search doesn't alwasy work right
-    console.log('searching for..."' + search + '"');
+    // console.log('searching for..."' + search + '"');
     if(!search) search = 'Star Wars';
     this.setState({ search });
     this.fetchMovies(1);
@@ -95,6 +89,7 @@ class App extends Component {
 
   render() {
     const {loading, movies} = this.state;
+    
     if(loading) return <div>Loading Movies...</div>;
     if(loading === false && !movies) return <div>No Movies Found ¯\_(ツ)_/¯</div>; // does this ever happen?
     
@@ -104,10 +99,14 @@ class App extends Component {
         <div>
           <Search onSearch={(search) => this.handleSearchChange(search)} />
           <br/>
-          <PageNavButton label="< Prev" incr={-1} className={this.state.prevBtnClass}
+          <PageNavButton label="< Prev" incr={-1}
+            className={this.state.prevBtnClass}
             onClick={this.handlePageChange.bind(this)} />
+          
           <p>Page {this.state.page} of {this.state.pages}</p>
-          <PageNavButton label="Next >" incr={1} className={this.state.nextBtnClass}
+          
+          <PageNavButton label="Next >" incr={1}
+            className={this.state.nextBtnClass}
             onClick={this.handlePageChange.bind(this)} />
         </div>
         <div>
@@ -134,7 +133,7 @@ function Search({ onSearch }) {
       onSearch(form.elements.search.value);
     }} >
       <input name="search"/>
-      <button type="submit">Search</button>
+      <button className="visible-button" type="submit">Search</button>
     </form>
   );
 }

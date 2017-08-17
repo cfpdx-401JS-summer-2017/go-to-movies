@@ -23,9 +23,9 @@ img {
   padding: .25rem;
 }
 
-img:hover {
+/* img:hover {
   box-shadow: 0 5px 15px rgba(0,0,0,0.6);
-}
+} */
 
 p {
   margin-top: 0;
@@ -47,7 +47,7 @@ input, input:focus {
   border: 1px solid black;
 }
 
-.button {
+.visible-button {
   font-size: 1rem;
   border-radius: 2px;
   border: 1px solid black;
@@ -57,11 +57,11 @@ input, input:focus {
   display: inline-block;
 }
 
-.hidden {
+.hidden-button {
   display: none;
 }
 
-.button:hover {
+.visible-button:hover {
   color: white;
   border: 1px solid black;
   background-color: black;
