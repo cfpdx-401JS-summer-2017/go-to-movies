@@ -13,10 +13,12 @@ export function Movies({ movies }) {
 }
 
 export function Movie({ movie }) {
+    const imbdLink = `http://www.imdb.com/title/${movie.imdbID}`;
     return (
         <div>
             <span>{movie.Title}</span>
-            <img src={movie.Poster} alt={movie.Title} style={{ width: 100 }} />
+            <br/>
+            <a href={imbdLink}><img src={movie.Poster} alt={movie.Title} style={{ width: 100 }} /></a>
         </div>
     );
 }

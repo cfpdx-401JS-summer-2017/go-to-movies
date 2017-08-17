@@ -17,22 +17,18 @@ class App extends Component {
         };
     }
 
-
     handleChange(event) {
-        console.log('changed');
         this.setState({
             title: event.target.value
         });
     }
 
     handleSubmit(event) {
-        console.log('submitted was', this.state.title);
         this.fetchMovies(this.state.page, this.state.title);
         event.preventDefault();
     }
 
     fetchMovies(page, title) {
-        console.log('title is',{title});
         this.setState({
             loading: true,
             movies: []
