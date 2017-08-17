@@ -50,28 +50,28 @@ class App extends Component {
     }
 
     render() {
-        const header = <h1> Let's Go to the Movies </h1>
+        const header = <h1> Let's Go to the Movies </h1>;
         const { loading, movies, search } = this.state;
         if (loading) return <div> Loading... </div>;
 
         return (
             <div className="App">
-            <div>
-                {header}
-            </div>
-            <div>
-                {this.state.search}
-            </div>
+                <div>
+                    {header}
+                </div>
+
                 <SearchButton onSearch={this.handleSearch.bind(this)}/>
-            <div className="Movies">
-                <PagingButton label="Prev Page" incr={-1}
-                    onClick={this.handlePageChange.bind(this)}
-                />
-                <PagingButton label="Next Page" incr={1}
-                    onClick={this.handlePageChange.bind(this)}
-                />
-                <Movies movies={movies} search={search} />
-            </div>
+
+                
+                <div className="Movies">
+                    <PagingButton label="Prev Page" incr={-1}
+                        onClick={this.handlePageChange.bind(this)}
+                    />
+                    <PagingButton label="Next Page" incr={1}
+                        onClick={this.handlePageChange.bind(this)}
+                    />
+                    <Movies movies={movies} search={search} />
+                </div>
             </div>
         );
     }
@@ -90,11 +90,10 @@ function SearchButton({ onSearch }){
         <form onSubmit = { e => {
             e.preventDefault();
             const form = e.target;
-            console.log(form);
             onSearch(form.elements.search.value);
         }}>
-        <input name="search"/>
-        <button type="submit">Submit</button>
+            <input name="search"/>
+            <button type="submit">Submit</button>
         </form>
     );
 }

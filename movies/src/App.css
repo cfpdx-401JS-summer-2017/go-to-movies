@@ -1,21 +1,37 @@
 .App {
   margin: 20px;
+  text-align: center;
 }
 
 .Movies {
-  text-align: left;
+  /* text-align: left; */
   display: block;
 
 }
 
+span {
+  font-size: 18px;
+  font-weight: bold;
+  width: 200px;
+  overflow-wrap: break-word;
+}
+
+p {
+  font-size: 14px;
+}
 ul{
   list-style-type: none;
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   flex-wrap: wrap;
-  width: 200px;
+  margin: 0 auto;
+  padding: 0 auto;
+  -webkit-padding-start: 70px;
 }
 
 li{
   clear: both;
+  width: fit-content;
+  margin: 20px;
+  width: 200px;
 }
