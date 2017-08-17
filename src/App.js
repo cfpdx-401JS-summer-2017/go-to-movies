@@ -71,7 +71,7 @@ class App extends Component {
                             <input type="submit" value="Submit" />
                         </form>
                     </div>
-                    <div>
+                    <div className="paging">
                         <PagingButton disabled={movies.length === 0} label="Prev Page" incr={-1} onClick={this.handlePageChange.bind(this)} />
                         <PagingButton disabled={movies.length === 0} label="Next Page" incr={1} onClick={this.handlePageChange.bind(this)} />
                     </div>

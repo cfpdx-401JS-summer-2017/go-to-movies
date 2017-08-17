@@ -18,7 +18,7 @@ export function Movie({ movie }) {
         <div>
             <span>{movie.Title}</span>
             <br/>
-            <a href={imbdLink}><img src={movie.Poster} alt={movie.Title} style={{ width: 100 }} /></a>
+            <a href={imbdLink}><img src={movie.Poster} alt={movie.Title} /></a>
         </div>
     );
 }
