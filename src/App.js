@@ -30,7 +30,6 @@ class App extends Component {
     }
 
     fetchMovies(page, title) {
-        console.log('title is', title);
         this.setState({
             loading: true,
             movies: []
@@ -40,7 +39,6 @@ class App extends Component {
             .then(res => res.json())
             .then(data => data.Search)
             .then(movies => {
-                console.log('movies are', movies);
                 if(movies) {
                     this.setState({
                         movies,
@@ -52,7 +50,6 @@ class App extends Component {
 
     handlePageChange(incr) {
         const page = Math.max(1, this.state.page + incr);
-        console.log('page is', page, 'incr is', incr);
         this.setState({ page });
         this.fetchMovies(page, this.state.title);
     }
@@ -84,6 +81,5 @@ class App extends Component {
         );
     }
 }
-
 
 export default App;

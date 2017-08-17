@@ -7,4 +7,3 @@ export function PagingButton({ onClick, incr, label, disabled }) {
         </button>
     );
 }
-

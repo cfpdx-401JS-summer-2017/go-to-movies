@@ -14,11 +14,12 @@ export function Movies({ movies }) {
 
 export function Movie({ movie }) {
     const imbdLink = `http://www.imdb.com/title/${movie.imdbID}`;
+    const posterLink = movie.Poster === 'N/A' ? 'missing-poster.png' : movie.Poster;
     return (
         <div>
             <span>{movie.Title}</span>
             <br/>
-            <a href={imbdLink}><img src={movie.Poster} alt={movie.Title} /></a>
+            <a href={imbdLink}><img src={posterLink} alt={movie.Title} /></a>
         </div>
     );
 }
