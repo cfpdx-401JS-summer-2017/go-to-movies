@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import './App.css';
-import { Movies } from './movies/Movies';
-import { Search } from './search/Search';
+import { Movies } from './components/Movies';
+import { Search } from './components/Search';
 
 const API_KEY = process.env.REACT_APP_API_KEY;
 
@@ -13,22 +13,23 @@ class App extends Component {
     this.state = {
       movies: null,
       page: 1,
-      loading: true,
-      search: ''
+      loading: true
     };
 
   }
 
-  componentDidMount() {
-    this.fetchMovies(this.state.page)
+  handleQuerySumbit(query) {
+    console.log('query.search', query.search)
+    const searchQuery = query.search.replace(/\s/g, '+');
+    this.fetchMovies(searchQuery, 1);
   }
 
-  fetchMovies(searchQuery) {
+  fetchMovies(searchQuery, page) {
     this.setState({
       movies: []
     });
 
-    fetch(`http://www.omdbapi.com/?s=${searchQuery}&plot=short&r=json&apikey=${API_KEY}`)
+    fetch(`http://www.omdbapi.com/?s=${searchQuery}&plot=short&r=json&page=${page}&apikey=${API_KEY}`)
       .then(res => res.json())
       .then(data => data.Search)
       .then(movies => {
@@ -41,20 +42,21 @@ class App extends Component {
 
   handlePageChange(incr) {
     const page = Math.max(1, this.state.page + incr);
+    const searchQuery = this.state.search;
     this.setState({ page });
-    this.fetchMovies(page);
+    this.fetchMovies(searchQuery, page);
   }
 
   render() {
     
     const { loading, movies } = this.state;
-    if(loading) return <div id="loading">Loading...</div>;
+    //if(loading) return <div id="loading">Loading...</div>;
 
     return(
       <div id="wrap">
         <div id="search">
           <div>{this.state.search}</div>
-          <Search onSearch={(search) => this.setState({ search })}/>
+          <Search onSearch={(search) => this.handleQuerySumbit({ search })}/>
         </div>
         <div id="content">
           <div id="pagination">
@@ -65,7 +67,7 @@ class App extends Component {
             onClick={this.handlePageChange.bind(this)}
             / >
           </div>
-          <Movies movies={movies} />
+          <Movies loading={loading} movies={movies} />
         </div>
       </div>
     );

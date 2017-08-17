@@ -5,8 +5,7 @@ export function Search({ onSearch }) {
         <form onSubmit={e => {
             e.preventDefault();
             const form = e.target;
-            //onSearch(form.elements.search.value);
-            
+            onSearch(form.elements.search.value);
         }}>
             <input name="search" placeholder="Search a movie title..." />
             <button type="submit">Search</button>
