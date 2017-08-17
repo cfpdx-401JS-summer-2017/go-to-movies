@@ -37,6 +37,7 @@
   border: none;
   color: #fff;
 }
+#pagination button:hover {background: #905853;}
 #pagination button:first-child {margin-right: 10px;}
 #pagination button:last-child {margin-left: 10px;}
 #content ul {list-style: none;}
