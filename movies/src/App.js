@@ -57,7 +57,9 @@ class App extends Component {
         return (
             <div className="App">
                 <div>
+                    <img alt="logo" src="http://www.freeiconspng.com/uploads/movie-icon-27.png" width="100"/>
                     {header}
+                    Search for you favorite movie below!
                 </div>
 
                 <SearchButton onSearch={this.handleSearch.bind(this)}/>

@@ -4,9 +4,18 @@
 }
 
 .Movies {
-  /* text-align: left; */
   display: block;
+}
+h1 {
+  font-family: 'Bungee Inline', cursive; 
+  font-size: 42px;
+}
+form {
+  margin: 20px;
+}
 
+button {
+  margin: 0 5px;
 }
 
 span {
@@ -19,6 +28,7 @@ span {
 p {
   font-size: 14px;
 }
+
 ul{
   list-style-type: none;
   display: flex;
