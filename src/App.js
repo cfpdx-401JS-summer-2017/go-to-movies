@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import './App.css';
 import { Movies } from './movies/Movies';
+import { PagingButton } from './paging/Paging';
 
 const API_KEY = process.env.REACT_APP_API_KEY;
 
@@ -29,6 +30,7 @@ class App extends Component {
     }
 
     fetchMovies(page, title) {
+        console.log('title is', title);
         this.setState({
             loading: true,
             movies: []
@@ -50,8 +52,9 @@ class App extends Component {
 
     handlePageChange(incr) {
         const page = Math.max(1, this.state.page + incr);
+        console.log('page is', page, 'incr is', incr);
         this.setState({ page });
-        this.fetchMovies(page);
+        this.fetchMovies(page, this.state.title);
     }
 
     render() {
@@ -82,12 +85,5 @@ class App extends Component {
     }
 }
 
-function PagingButton({ onClick, incr, label, disabled }) {
-    return (
-        <button disabled={disabled} onClick={() => onClick(incr)}>
-            {label}
-        </button>
-    );
-}
 
 export default App;
