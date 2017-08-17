@@ -22,7 +22,7 @@ export function Movie({ movie }){
         <div>
             <span>{ movie.Title } </span>
             <p>Released: {movie.Year}</p>
-            <img alt = "movie poster" src={movie.Poster} style={{width: 200}}/>
+            <img alt = "movie poster" src={movie.Poster === 'N/A' ? '/harrystyles.jpeg' : movie.Poster} style={{width: 200}}/>
         </div>
     );
 }
