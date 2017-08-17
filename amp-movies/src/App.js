@@ -43,9 +43,13 @@ class App extends Component {
     this.fetchMovies(page);
   }
 
+  handleInputChange(event) {
+    this.setState({search:event.target.value})
+  }
+
   handleSearch(search) {
-    const searchText = SearchBar.data;
-    this.setState({searchText})
+    search.preventDefault()
+    this.fetchMovies(this.state.search);
   }
 
   render() {
@@ -54,11 +58,10 @@ class App extends Component {
 
     return (
       <div>
-        <div>
-          <SearchBar label="Search" submit="search"
-            onClick={this.handleSearch.bind(this)}
-          />
-        </div>
+        <form onSubmit={this.handleSearch.bind(this)}>
+          <SearchBar value={this.state.search} onChange={this.handleInputChange.bind(this)}/>
+          <SearchButton label="Search"/>
+        </form>
         <div>
           <PagingButton label="Prev Page" incr={-1}
             onClick={this.handlePageChange.bind(this)}
@@ -79,9 +82,17 @@ class App extends Component {
   }
 }
 
-function SearchBar({onClick, submit, label}) {
+function SearchBar({onChange, value}) {
   return(
-    <input type="text" onClick={() => onClick(submit)}/>
+    <input type="text" onChange={onChange}/>
+  )
+}
+
+function SearchButton({label}) {
+  return(
+    <button>
+      {label}
+    </button>
   )
 }
 
