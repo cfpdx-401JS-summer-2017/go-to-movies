@@ -19,7 +19,7 @@ class App extends Component {
 
   }
 
-  handleQuerySumbit(query) {
+  handleQuerySubmit(query) {
     const searchQuery = query.search.split(' ').join('+');
     this.setState({
       search: searchQuery
@@ -60,7 +60,7 @@ class App extends Component {
     return(
       <div id="wrap">
         <div id="search">
-          <Search onSearch={(search) => this.handleQuerySumbit({ search })}/>
+          <Search onSearch={(search) => this.handleQuerySubmit({ search })}/>
         </div>
         <div id="content">
           {this.state.movies &&
