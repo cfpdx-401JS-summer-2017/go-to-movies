@@ -13,14 +13,17 @@ class App extends Component {
     this.state = {
       movies: null,
       page: 1,
-      loading: true
+      loading: true,
+      search: ''
     };
 
   }
 
   handleQuerySumbit(query) {
-    console.log('query.search', query.search)
-    const searchQuery = query.search.replace(/\s/g, '+');
+    const searchQuery = query.search.split(' ').join('+');
+    this.setState({
+      search: searchQuery
+    });
     this.fetchMovies(searchQuery, 1);
   }
 
@@ -33,6 +36,7 @@ class App extends Component {
       .then(res => res.json())
       .then(data => data.Search)
       .then(movies => {
+        console.log('movies', movies);
         this.setState({
           movies,
           loading: false
@@ -43,6 +47,8 @@ class App extends Component {
   handlePageChange(incr) {
     const page = Math.max(1, this.state.page + incr);
     const searchQuery = this.state.search;
+    console.log('page', page);
+    console.log('searchQuery', searchQuery);
     this.setState({ page });
     this.fetchMovies(searchQuery, page);
   }
@@ -50,23 +56,23 @@ class App extends Component {
   render() {
     
     const { loading, movies } = this.state;
-    //if(loading) return <div id="loading">Loading...</div>;
-
+    
     return(
       <div id="wrap">
         <div id="search">
-          <div>{this.state.search}</div>
           <Search onSearch={(search) => this.handleQuerySumbit({ search })}/>
         </div>
         <div id="content">
-          <div id="pagination">
-            <PagingButton label="Prev Page" incr={-1}
-            onClick={this.handlePageChange.bind(this)}
-            / >
-            <PagingButton label="Next Page" incr={1}
-            onClick={this.handlePageChange.bind(this)}
-            / >
-          </div>
+          {this.state.movies &&
+            <div id="pagination">
+              <PagingButton label="Prev Page" incr={-1}
+              onClick={this.handlePageChange.bind(this)}
+              / >
+              <PagingButton label="Next Page" incr={1}
+              onClick={this.handlePageChange.bind(this)}
+              / >
+            </div>
+          }
           <Movies loading={loading} movies={movies} />
         </div>
       </div>
