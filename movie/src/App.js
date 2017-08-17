@@ -14,7 +14,9 @@ class App extends Component {
       page: 1,
       pages: 1,
       loading: true,
-      search: 'Star Wars'
+      search: 'Star Wars',
+      prevBtnClass: 'hidden',
+      nextBtnClass: 'button'
     };
   }
 
@@ -23,44 +25,37 @@ class App extends Component {
   }
 
   fetchMovies(page) {
-    
-    this.setState({
-      //TODO: search: ...
-      movies:[]
-    });
+    this.setState({ movies:[] });
 
     const url = `http://www.omdbapi.com/?apikey=${API_KEY}&s=${this.state.search}&r=json&page=${page}`;
-    console.log(url);
+    // console.log(url);
   
     fetch(url)    
       .then(res => res.json())
       .then(data => {
         if(data.Response === 'False') console.log(data.Error);
         else {
-          console.log('count of found movies', data.totalResults);
           const pages = Math.ceil(data.totalResults / 10); //round up
-
-          console.log('count of pages', pages);
-          this.setState({ pages });
-
-          console.log('count of movies in this set', data.Search.length);
-
-          // return data.Search;
           const movies = data.Search;
-          this.setState({ movies, loading: false });
+          this.setState({ pages, movies, loading: false });
+          // console.log('count of found movies', data.totalResults);
+          // console.log('count of pages', pages);
+          // console.log('count of movies in this set', data.Search.length);
+          // return data.Search;
         }
       });
       // .then(movies => {
-      //   const moviesWithDetails = movies.map(movie => {
-      //     console.log('movie', movies.imdbID);
+      //   const detailedMovies = {};
+      //   movies.map((movie) => {
       //     return this.fetchMovieDetails(movie.imdbID);
+      //       .then
+      //     this.setState({ movies: detailedMovies });
       //   });
-      //   console.log('count of movies with details', moviesWithDetails.length);
-      //   this.setState({ movies: moviesWithDetails, loading: false });
       // });
   }
 
   // fetchMovieDetails(imdbID) {
+  //   // console.lot('OMG it worked!');
   //   const url = `http://www.omdbapi.com/?apikey=${API_KEY}&i=${imdbID}&r=json`;
   
   //   fetch(url)    
@@ -74,16 +69,18 @@ class App extends Component {
     if(this.state.page === 1 && incr === -1) {
       console.log('you are on the first page');
       //TODO: disable prev button
+      this.setState({ prevBtnClass: 'hidden', nextBtnClass: 'button'});
 
     } else if(this.state.page === this.state.pages && incr === 1) {
       console.log('you are on the last page');
       //TODO: disable next button
+      this.setState({ prevBtnClass: 'button', nextBtnClass: 'hidden'});
 
     } else {
       const nextPage = Math.max(1, this.state.page + incr);
       console.log('going to next page', nextPage);
-
-      this.setState({ page: nextPage });
+      
+      this.setState({ page: nextPage, prevBtnClass: 'button', nextBtnClass: 'button'});
       this.fetchMovies(nextPage);
     }
   }
@@ -99,7 +96,7 @@ class App extends Component {
   render() {
     const {loading, movies} = this.state;
     if(loading) return <div>Loading Movies...</div>;
-    if(loading === false && !movies) return <div>No Movies Found ¯\_(ツ)_/¯</div>;
+    if(loading === false && !movies) return <div>No Movies Found ¯\_(ツ)_/¯</div>; // does this ever happen?
     
     return (
       <div className="main">
@@ -107,9 +104,11 @@ class App extends Component {
         <div>
           <Search onSearch={(search) => this.handleSearchChange(search)} />
           <br/>
-          <PageNavButton label="< Prev" incr={-1} onClick={this.handlePageChange.bind(this)} />
-          <PageNavButton label="Next >" incr={1} onClick={this.handlePageChange.bind(this)} />
+          <PageNavButton label="< Prev" incr={-1} className={this.state.prevBtnClass}
+            onClick={this.handlePageChange.bind(this)} />
           <p>Page {this.state.page} of {this.state.pages}</p>
+          <PageNavButton label="Next >" incr={1} className={this.state.nextBtnClass}
+            onClick={this.handlePageChange.bind(this)} />
         </div>
         <div>
           <Movies movies={movies} />
@@ -119,9 +118,9 @@ class App extends Component {
   }
 }
 
-function PageNavButton({ onClick, incr, label }) {
+function PageNavButton({ onClick, incr, label, className }) {
   return (
-    <button onClick={() => onClick(incr)}>
+    <button onClick={() => onClick(incr)} className={className} >
       {label}
     </button>
   );
