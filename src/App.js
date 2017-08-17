@@ -32,8 +32,18 @@ class App extends Component {
       .then(res => res.json())
       .then(data => data.Search)
       .then(movies => {
+        if(!movies)
+            return this.setState({
+              movies: [{
+                imdbID: '123',
+                Title: 'No search results. Please try another search term',
+                Poster: logo
+              }],
+              loading: false
+            })
         this.setState({
           movies,
+
           loading: false
         });
       });
@@ -56,7 +66,7 @@ class App extends Component {
       <div>
         <div>{this.state.search}</div>
         <Search onSearch={(search) => this.fetchMovies(search)}
-           />
+        />
         <Movies movies={movies} />
       </div>
     );
