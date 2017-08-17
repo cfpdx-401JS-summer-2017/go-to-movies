@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import './App.css';
 import { Movies } from './movies/Movies';
+import { Search } from './search/Search';
 
 const API_KEY = process.env.REACT_APP_API_KEY;
 
@@ -12,7 +13,8 @@ class App extends Component {
     this.state = {
       movies: null,
       page: 1,
-      loading: true
+      loading: true,
+      search: ''
     };
 
   }
@@ -21,12 +23,12 @@ class App extends Component {
     this.fetchMovies(this.state.page)
   }
 
-  fetchMovies(page) {
+  fetchMovies(searchQuery) {
     this.setState({
       movies: []
     });
 
-    fetch(`http://www.omdbapi.com/?s=St&plot=short&r=json&page=${page}&apikey=${API_KEY}`)
+    fetch(`http://www.omdbapi.com/?s=${searchQuery}&plot=short&r=json&apikey=${API_KEY}`)
       .then(res => res.json())
       .then(data => data.Search)
       .then(movies => {
@@ -46,17 +48,25 @@ class App extends Component {
   render() {
     
     const { loading, movies } = this.state;
-    if(loading) return <div>Loading...</div>;
+    if(loading) return <div id="loading">Loading...</div>;
 
     return(
-      <div>
-        <PagingButton label="Prev Page" incr={-1}
-          onClick={this.handlePageChange.bind(this)}
-        / >
-        <PagingButton label="Next Page" incr={1}
-          onClick={this.handlePageChange.bind(this)}
-        / >
-        <Movies movies={movies} />
+      <div id="wrap">
+        <div id="search">
+          <div>{this.state.search}</div>
+          <Search onSearch={(search) => this.setState({ search })}/>
+        </div>
+        <div id="content">
+          <div id="pagination">
+            <PagingButton label="Prev Page" incr={-1}
+            onClick={this.handlePageChange.bind(this)}
+            / >
+            <PagingButton label="Next Page" incr={1}
+            onClick={this.handlePageChange.bind(this)}
+            / >
+          </div>
+          <Movies movies={movies} />
+        </div>
       </div>
     );
 
