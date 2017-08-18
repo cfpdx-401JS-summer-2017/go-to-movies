@@ -1,0 +1,48 @@
+form {
+  margin: 5px auto;
+  test-align: center;
+}
+
+form input {
+  margin: 2% 1% 2% 30%;
+}
+
+form button {
+  margin: 2% 30% 2% 1%;
+}
+
+#queryReminder {
+  margin: 10px auto;
+  text-align: center;
+}
+
+ul {
+  border: 5px groove #828282;
+  display: flex;
+  flex-wrap: wrap;
+  flex-flow: space-evenly;
+  align-items: center;
+  text-align: center;
+  list-style-type: none;
+  overflow: scroll;
+  max-height: 455px;
+  max-width: 900px;
+  margin: 5px auto;
+}
+
+li * {
+  display: block;
+  margin: 5px;
+}
+
+img {
+  border: none;
+  margin: auto;
+}
+
+li div {
+  border: 4px groove #848282;
+  width: 150px;
+  height: 200px;
+  overflow: hidden;
+}
