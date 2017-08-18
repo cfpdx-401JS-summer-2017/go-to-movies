@@ -1,0 +1,50 @@
+.frame {
+  margin: -22px;
+  width: 100vw; 
+  height: 200vh;
+  background-image: url('./red-theater-curtains.jpg');
+  background-size: contain; 
+  background-repeat: no-repeat;
+}
+
+.paging {
+  text-align: center;
+}
+
+h1 {
+  text-align: center;
+  padding: 40vh 0 0 0;
+  color: #a50e0e;
+}
+
+form {
+  margin: 1em;
+  text-align: center;
+}
+
+form input {
+  margin: 0.5em 0 0 1em;
+}
+
+ul {
+  list-style-type: none;
+  display: flex;
+  justify-content: space-around; 
+  flex-wrap: wrap;
+  color: white;
+  font-size: 1.25rem;
+}
+
+li {
+  margin: 1em; 
+  padding: 0.25em;
+  width: 10em;
+  background-color: #a50e0e;
+  border: 3px solid gold;
+  text-align: center;
+}
+
+img {
+  width: 10em; 
+  height: auto; 
+}
