@@ -1,0 +1,47 @@
+.App {
+  margin: 20px;
+  text-align: center;
+}
+
+.Movies {
+  display: block;
+}
+h1 {
+  font-family: 'Bungee Inline', cursive; 
+  font-size: 42px;
+}
+form {
+  margin: 20px;
+}
+
+button {
+  margin: 0 5px;
+}
+
+span {
+  font-size: 18px;
+  font-weight: bold;
+  width: 200px;
+  overflow-wrap: break-word;
+}
+
+p {
+  font-size: 14px;
+}
+
+ul{
+  list-style-type: none;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  margin: 0 auto;
+  padding: 0 auto;
+  -webkit-padding-start: 70px;
+}
+
+li{
+  clear: both;
+  width: fit-content;
+  margin: 20px;
+  width: 200px;
+}
