@@ -1,0 +1,17 @@
+.App {
+  text-align: center;
+  display: flex;
+}
+
+body {
+  background-color: seashell;
+}
+
+span {
+  float: right;
+}
+
+li {
+  display: flex;
+  flex-wrap: wrap;
+}
